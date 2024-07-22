@@ -1,0 +1,105 @@
+<form [formGroup]="surveyForm">
+  <div *ngIf="step === 1">
+    <h2>Create Survey</h2>
+    <div>
+      <label for="surveyName">Survey Name:</label>
+      <input id="surveyName" formControlName="surveyName" required>
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <input id="description" formControlName="description" required>
+    </div>
+    <button class="btn btn-primary" (click)="next()">Save and Continue</button>
+    <button class="btn btn-danger" (click)="resetbutton()">Reset</button>
+  </div>
+
+</form>
+
+
+<div *ngIf="step === 2">
+<div class="survey-container">
+  <h2>Survey details</h2>
+  <div class="survey-form">
+    <div class="form-group">
+      <label for="questionType">Question Type</label>
+      <select id="questionType" class="form-control" (change)="onQuestionTypeChange($event)">
+        <option value="single">Single Response</option>
+        <option value="multiple">Multiple Response</option>
+        <option value="open-ended">Open Ended Response</option>
+        <option value="rating">Rating Response</option>
+      </select>
+    </div>
+
+    <div class="form-group" >
+      <label for="questionLabel">Question Label</label>
+      <textarea id="questionLabel" class="form-control" placeholder="Insert text here..."></textarea>
+    </div>
+
+    <div *ngIf="questionType === 'single' || questionType === 'multiple' || questionType === 'rating'">
+      <div class="form-group">
+        <label for="response">Responses</label>
+        <div class="response-container">
+          <input type="text" id="response" class="form-control" placeholder="Type response here">
+          <button (click)="addResponse()" class="add-button">+</button>
+        </div>
+        <div class="response-list">
+          <div class="response-item" *ngFor="let response of responses">
+            {{ response }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="questionType === 'rating'">
+      <div class="form-group">
+        <label for="rating">Rating</label>
+        <select id="rating" class="form-control">
+          <option *ngFor="let option of ratingOptions" [value]="option">{{ option }}</option>
+        </select>
+        <div class="custom-rating">
+          <input type="number" id="customRating" class="form-control" placeholder="Add custom rating">
+          <button (click)="addCustomRating()" class="add-button">Add</button>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="button-group">
+    <button class="btn btn-primary" (click)="saveAndContinue()">Save and Continue</button>
+    <button class="btn btn-secondary" (click)="next()">Finalise Survey</button>
+    <button class="btn btn-danger" (click)="reset()">Reset</button>
+  </div>
+</div>
+</div>
+
+
+<div *ngIf="step === 3">
+  <h2>Finalise Survey</h2>
+  <div>
+    <label for="surveyName">Survey Name:</label>
+    <span>{{ surveyForm.get('surveyName')?.value }}</span>
+  </div>
+  <div>
+    <label for="description">Description:</label>
+    <span>{{ surveyForm.get('description')?.value }}</span>
+  </div>
+  <div>
+    <h3>Questions</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Question Type</th>
+          <th>Question Label</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let question of questions">
+          <td>{{ question.category }}</td>
+          <td>{{ question.label }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+  <button class="btn btn-secondary" (click)="finish()">Finish</button>
+  <button class="btn btn-danger" (click)="resetbutton()">Reset</button>
+</div>

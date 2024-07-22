@@ -1,0 +1,12 @@
+/* app.component.css */
+.content {
+    padding-bottom: 60px; /* Adjust based on footer height */
+  }
+  body{
+    height: 100vh;
+    margin-bottom: 100px !important;
+    }
+    app-root{
+      margin-bottom: 100px;
+    }
+  

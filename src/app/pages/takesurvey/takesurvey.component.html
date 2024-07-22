@@ -1,0 +1,58 @@
+<div *ngIf="survey && step === 0" style="margin-left: 10%; margin-bottom: 10%;">
+  <h2>{{ survey.title }}</h2>
+  <p>{{ survey.summary }}</p>
+  <button (click)="nextStep()">Begin</button>
+</div>
+
+<div *ngIf="survey && step >= 1 && step <= survey.questions.length" style="margin-left: 10%; margin-bottom: 10%;">
+  <div *ngIf="currentQuestion">
+    <h3>{{ currentQuestion.label }}</h3>
+    <div [ngSwitch]="currentQuestion.category">
+      <!-- Render based on question category -->
+      <div *ngSwitchCase="'SINGLEOPTION'">
+        <ul>
+          <li *ngFor="let option of currentQuestion.options">
+            <label>
+              <input type="radio" name="{{ currentQuestion.questionId }}" [(ngModel)]="currentAnswer" [value]="option.optionValue">
+              {{ option.optionValue }}
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div *ngSwitchCase="'MULTIOPTION'">
+        <ul>
+          <li *ngFor="let option of currentQuestion.options; let i = index">
+            <label>
+              <input type="checkbox" [value]="option.optionValue" (change)="onCheckboxChange($event, option.optionValue)" [checked]="currentAnswer.includes(option.optionValue)">
+              {{ option.optionValue }}
+            </label>
+          </li>
+        </ul>
+      </div>
+      
+      <div *ngSwitchCase="'OPENENDED'">
+        <textarea name="{{ currentQuestion.questionId }}" rows="4" cols="50" [(ngModel)]="currentAnswer"></textarea>
+      </div>
+      <div *ngSwitchCase="'RATING'">
+        <div class="rating-container">
+          <div *ngFor="let option of currentQuestion.options" class="rating-option">
+            <input type="radio" name="{{ currentQuestion.questionId }}" [(ngModel)]="currentAnswer" [value]="option.optionValue">
+            <div>{{ option.optionValue }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button (click)="nextStep()">Save</button>
+  </div>
+</div>
+
+<div *ngIf="survey && step === survey.questions?.length + 1" style="margin-left: 10%; margin-bottom: 10%;">
+  <h2>Review and Submit</h2>
+  <button (click)="submitSurvey()">Submit</button>
+</div>
+<div *ngIf="step === -1">
+  <div style="margin-left: 10%; margin-bottom: 10%;">
+    <h2>Thank You!</h2>
+    <p>Your survey has been submitted.</p>
+  </div>
+</div>

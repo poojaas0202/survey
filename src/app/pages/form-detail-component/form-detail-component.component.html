@@ -1,0 +1,19 @@
+<h2>{{ form.name }}</h2>
+<p>{{ form.description }}</p>
+
+<div *ngIf="currentQuestion">
+  <h3>Question {{ currentQuestion.id }}: {{ currentQuestion.question }}</h3>
+  <ul>
+    <li *ngFor="let answer of currentQuestion.answers">
+      <label>
+        <input type="radio" name="answer" [(ngModel)]="currentQuestion.answer" [value]="answer"> {{ answer }}
+      </label>
+    </li>
+  </ul>
+  <button (click)="onSaveAndContinue()">Save and Continue</button>
+</div>
+
+<!-- Optionally display a completion message or navigate to another component upon form completion -->
+<div *ngIf="currentQuestionIndex >= form.questions.length">
+  <p>Form completed!</p>
+</div>

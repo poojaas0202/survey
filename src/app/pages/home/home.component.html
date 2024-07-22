@@ -1,0 +1,24 @@
+<div *ngIf="surveys$ | async as surveys; else loading">
+  <h2>Surveys</h2>
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="box-container create-box" (click)="navigate()">
+        <i class="fas fa-plus"></i>
+        <p>Create Survey</p>
+      </div>
+    </div>
+    <div class="grid-item" *ngFor="let survey of surveys">
+      <div class="box-container">
+        <h3>{{ survey.title }}</h3>
+        <p>{{ survey.summary }}</p>
+        <button (click)="takeSurvey(survey)">Copy URL</button>
+        <button (click)="navigatesurveyreport(survey)">View Report</button>
+      </div>
+    </div>
+    <button (click)="navigatereport()">View Report</button>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div>Loading surveys...</div>
+</ng-template>
